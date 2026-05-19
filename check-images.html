@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeiSource — Image checklist</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
+    h1 { font-size: 1.4rem; }
+    .ok { color: #1b6b45; }
+    .fail { color: #b83232; }
+    li { margin: 12px 0; padding: 12px; background: #fbf4ea; border-radius: 8px; list-style: none; }
+    code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+    img { max-width: 120px; max-height: 150px; display: block; margin-top: 8px; border-radius: 6px; }
+    .path { font-size: 12px; color: #666; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <h1>Product image checklist</h1>
+  <p>Folder: <code>fashion-catalog/images/products/</code></p>
+  <p id="server-hint"></p>
+  <ul id="list">Checking…</ul>
+  <p><a href="index.html">← Back to catalog</a></p>
+  <script src="js/products.js"></script>
+  <script src="js/image-utils.js"></script>
+  <script>
+    const hint = document.getElementById("server-hint");
+    if (location.protocol === "file:") {
+      hint.innerHTML = '<strong style="color:#b83232">You opened this as a file.</strong> Run <code>python3 -m http.server 8080</code> in the project folder, then open <code>http://localhost:8080/check-images.html</code>';
+    }
+    const targets = PRODUCTS.filter((p) => p.image && !/^https?:/i.test(p.image));
+    const ul = document.getElementById("list");
+    ul.innerHTML = "";
+    Promise.all(
+      targets.map(async (p) => {
+        const results = await checkLocalImages([p.image]);
+        const r = results[0];
+        const li = document.createElement("li");
+        const name = p.image.split("/").pop();
+        if (r.ok) {
+          li.className = "ok";
+          li.innerHTML = `<strong>✓ ${p.name}</strong><br><span class="path">Found: ${r.found}</span><img src="${r.found}" alt="" />`;
+        } else {
+          li.className = "fail";
+          li.innerHTML = `<strong>✗ ${p.name}</strong><br>Expected file like <code>${name}</code> (also tries .png, .jpeg)<br><span class="path">${p.image}</span>`;
+        }
+        return li;
+      })
+    ).then((items) => items.forEach((li) => ul.appendChild(li)));
+  </script>
+</body>
+</html>
