@@ -5,7 +5,7 @@
 const STORE_CONFIG = {
   storeName: "WeiSource",
   contactName: "Peiwei",
-  whatsappNumber: "8619542721484",
+  whatsappNumber: "8618825146113",
   whatsappGreeting: "Hello! I'd like a quote for the following items:",
   currencyNote: "Please confirm stock, shipping & payment terms. — Peiwei, WeiSource",
 };
