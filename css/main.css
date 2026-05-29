@@ -422,7 +422,9 @@ a { color: inherit; text-decoration: none; }
   background: var(--color-whatsapp-hover);
   transform: translateY(-1px);
 }
-.btn--whatsapp:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn--whatsapp:disabled,
+.btn--whatsapp.is-disabled,
+.btn--whatsapp[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; transform: none; pointer-events: none; }
 .btn--full { width: 100%; }
 .btn--sm { padding: 10px 14px; font-size: 12px; }
 
@@ -688,6 +690,8 @@ a { color: inherit; text-decoration: none; }
   color: var(--color-gold-light);
 }
 .footer__text, .footer p { margin: 0; font-size: 14px; color: rgba(255,255,255,0.75); }
+.footer__link { color: rgba(255,255,255,0.92); text-decoration: underline; text-underline-offset: 3px; }
+.footer__link:hover { color: #fff; }
 .footer__label {
   font-size: 11px;
   font-weight: 600;

@@ -253,11 +253,31 @@
     els.productModal.showModal();
   }
 
+  function updateWhatsAppLink() {
+    const total = Cart.totalQty();
+    const baseUrl = `https://wa.me/${STORE_CONFIG.whatsappNumber}`;
+    const footer = document.getElementById("footerWhatsapp");
+    if (footer) {
+      footer.href = baseUrl;
+      footer.textContent = `${STORE_CONFIG.whatsappDisplay} · ${STORE_CONFIG.contactName}`;
+    }
+    if (!els.whatsappBtn) return;
+    if (total === 0) {
+      els.whatsappBtn.href = "#";
+      els.whatsappBtn.setAttribute("aria-disabled", "true");
+      els.whatsappBtn.classList.add("is-disabled");
+    } else {
+      els.whatsappBtn.href = Cart.getWhatsAppUrl();
+      els.whatsappBtn.removeAttribute("aria-disabled");
+      els.whatsappBtn.classList.remove("is-disabled");
+    }
+  }
+
   function renderCart() {
     const items = Cart.items;
     const total = Cart.totalQty();
     els.cartTotalQty.textContent = total;
-    els.whatsappBtn.disabled = total === 0;
+    updateWhatsAppLink();
 
     if (items.length === 0) {
       els.cartItems.innerHTML = `<p class="cart-empty">Your quote list is empty.<br />Browse products and add items.</p>`;
@@ -406,9 +426,10 @@
   els.cartClose.addEventListener("click", closeCart);
   els.overlay.addEventListener("click", closeCart);
 
-  els.whatsappBtn.addEventListener("click", () => {
-    if (Cart.totalQty() === 0) return;
-    window.open(Cart.getWhatsAppUrl(), "_blank", "noopener,noreferrer");
+  els.whatsappBtn.addEventListener("click", (e) => {
+    if (Cart.totalQty() === 0 || els.whatsappBtn.classList.contains("is-disabled")) {
+      e.preventDefault();
+    }
   });
 
   els.menuToggle.addEventListener("click", () => {
