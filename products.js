@@ -15,6 +15,20 @@
  */
 const PRODUCTS = [
   {
+    id: "sh-lady-scandals-20260529",
+    name: "Lady Scandals",
+    category: "shoes",
+    sizes: ["35/36", "37/38", "39/40"],
+    moq: 100,
+    moqUnit: "pcs",
+    price: "$0.8/pcs",
+    cbmNote: "100 pcs/carton",
+    colors: ["Assorted"],
+    image: "images/products/sh-lady-scandals.jpg",
+    featured: true,
+    isNew: true,
+  },
+  {
     id: "cl-tshirt-300g",
     name: "Cotton T-Shirt (~300g)",
     category: "clothing",
